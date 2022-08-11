@@ -6,9 +6,6 @@ MIGRATIONS_SOURCE=file://$MIGRATIONS_PATH
 
 DB_DSN="postgresql://$WRITE_DB_USER:$WRITE_DB_PASS@$WRITE_DB_HOST:$WRITE_DB_PORT/$WRITE_DB_NAME?sslmode=disable"
 
-echo $(ls)
-echo $@
-
 if [[ $# -eq 0 ]]; then
     echo "Usage: $0 <up/down/create> <args ...>"
     exit 1

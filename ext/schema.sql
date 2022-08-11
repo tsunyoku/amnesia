@@ -31,7 +31,7 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     name character varying(32) NOT NULL,
     safe_name character varying(32) NOT NULL,
-    email character varying(64) NOT NULL,
+    email character varying(256) NOT NULL,
     password_bcrypt character(60) NOT NULL,
     privileges integer DEFAULT 1 NOT NULL,
     country character(2) DEFAULT 'xx'::bpchar NOT NULL,

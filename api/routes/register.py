@@ -10,7 +10,9 @@ from fastapi import status
 from fastapi.responses import ORJSONResponse
 from fastapi.responses import Response
 
-import utils
+import repositories.users
+import usecases.geolocation
+import usecases.passwords
 from api.routes import router
 
 USERNAME_REGEX = re.compile(r"^[\w \[\]-]{3,32}$")
@@ -32,14 +34,14 @@ async def register_user(
     if "_" in username and " " in username:
         errors["username"].append("Usernames cannot contain an underscore and space")
 
-    if not errors["username"]:
-        ...  # check username doesn't already exist
+    if await repositories.users.fetch_by_name(username):
+        errors["username"].append("Username must not be in use")
 
     if not EMAIL_REGEX.match(email):
         errors["user_email"].append("You must enter a valid email")
 
-    if not errors["user_email"]:
-        ...  # check email doesn't already exist
+    if await repositories.users.fetch_by_email(email):
+        errors["user_email"].append("Email must not be in use")
 
     if not 8 <= len(password) <= 32:
         errors["password"].append("Passwords must be between 8 and 32 characters")
@@ -50,7 +52,14 @@ async def register_user(
             status_code=status.HTTP_400_BAD_REQUEST,
         )
 
-    # create user
-    ...
+    password_bcrypt = await usecases.passwords.hash(password)
+    country = usecases.geolocation.fetch_country_from_headers(request.headers)
+
+    user_id = await repositories.users.create(
+        name=username,
+        email=email,
+        password_bcrypt=password_bcrypt,
+        country=country,
+    )
 
     return Response(content=b"ok")

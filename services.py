@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import aioredis
 import databases
+import geoip2.database
 import httpx
 
 import settings
@@ -12,7 +13,10 @@ write_database: databases.Database
 database: Database
 
 redis: aioredis.Redis
+
 http: httpx.AsyncClient
+
+geolocation: geoip2.database.Reader = geoip2.database.Reader("ext/geoloc.mmdb")
 
 
 async def connect_services() -> None:

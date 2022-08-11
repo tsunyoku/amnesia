@@ -23,3 +23,18 @@ async def verify(plain_password: str, hashed_password: str) -> bool:
         CACHE[hashed_password] = plain_password
 
     return result
+
+
+async def hash(plain_password: str) -> str:
+    loop = asyncio.get_running_loop()
+    result = (
+        await loop.run_in_executor(
+            None,
+            bcrypt.hashpw,
+            plain_password.encode(),
+            bcrypt.gensalt(),
+        )
+    ).decode()
+
+    CACHE[result] = plain_password
+    return result

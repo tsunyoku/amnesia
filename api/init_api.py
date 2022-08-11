@@ -1,9 +1,11 @@
 from __future__ import annotations
+
 import logging
 
 from fastapi import FastAPI
 
 import services
+from api.routes import router
 
 
 def init_events(app: FastAPI) -> None:
@@ -22,6 +24,7 @@ def init_api() -> FastAPI:
     app = FastAPI()
 
     init_events(app)
+    app.include_router(router)
 
     return app
 

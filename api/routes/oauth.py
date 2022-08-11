@@ -24,7 +24,10 @@ async def oauth_token(
 ) -> ORJSONResponse:
     # osu!lazer has a static id and secret
     assert client_id == 5
-    assert client_secret == "FGc9GAtyHzeQDshWP5Ah7dega8hJACAJpQtw6OXk"
+    assert client_secret in (
+        "FGc9GAtyHzeQDshWP5Ah7dega8hJACAJpQtw6OXk",  # production
+        "3LP2mhUrV89xxzD1YKNndXHEhWWCRLPNKioZ9ymT",  # development
+    )
 
     # TODO: what is osu!'s error responses?
 

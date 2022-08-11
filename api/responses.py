@@ -1,5 +1,9 @@
-from msilib.schema import Error
-from typing import TypedDict, Generic, TypeVar, Literal
+from __future__ import annotations
+
+from typing import Generic
+from typing import Literal
+from typing import TypedDict
+from typing import TypeVar
 
 T = TypeVar("T")
 

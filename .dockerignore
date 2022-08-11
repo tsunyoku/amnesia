@@ -1,3 +1,8 @@
 postgres
 venv
 .git
+Dockerfile
+docker-compose.yml
+.gitignore
+.pre-commit-config.yaml
+__pycache__

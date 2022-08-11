@@ -26,6 +26,9 @@ services:
     image: amnesia:latest
     ports:
       - 3000:80
+    environment:
+      # CRITICAL: 50 | ERROR: 40 | WARNING: 30 | INFO: 20 | DEBUG: 10
+      - LOG_LEVEL=20
     volumes:
       - .:/amnesia
     depends_on:

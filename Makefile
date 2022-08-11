@@ -7,7 +7,7 @@ run-bare:
 	@./main.py
 
 build:
-	@docker build .
+	@docker build -t amnesia:latest .
 
 run:
-	@docker-compose up mysql redis amnesia
+	@docker-compose up mysql redis amnesia --build

@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # amnesia specific ignores
-mysql/
+postgres/

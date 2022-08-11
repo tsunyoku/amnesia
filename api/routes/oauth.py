@@ -6,6 +6,7 @@ from fastapi import Form
 from fastapi import status
 from fastapi.responses import ORJSONResponse
 
+import repositories.sessions
 import repositories.users
 import usecases.passwords
 from api import responses
@@ -40,11 +41,13 @@ async def oauth_token(
             "incorrect username/password",
         )
 
+    session = await repositories.sessions.create(user.id)
+
     return responses.success(
         {
             "token_type": "Bearer",
-            "expires_in": 0,
-            "access_token": "",
-            "refresh_token": "",
+            "expires_in": session.expires_in.total_seconds(),
+            "access_token": session.access_token,
+            "refresh_token": session.refresh_token,
         },
     )

@@ -29,6 +29,21 @@ services:
     environment:
       # CRITICAL: 50 | ERROR: 40 | WARNING: 30 | INFO: 20 | DEBUG: 10
       - LOG_LEVEL=20
+
+      - READ_DB_USER=root
+      - READ_DB_PASS=amnesia
+      - READ_DB_HOST=mysql
+      - READ_DB_PORT=3306
+      - READ_DB_NAME=amnesia
+
+      - WRITE_DB_USER=root
+      - WRITE_DB_PASS=amnesia
+      - WRITE_DB_HOST=mysql
+      - WRITE_DB_PORT=3306
+      - WRITE_DB_NAME=amnesia
+
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     volumes:
       - .:/amnesia
     depends_on:

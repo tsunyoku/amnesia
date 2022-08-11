@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Any
 from typing import Literal
 
 from fastapi import Form
@@ -9,7 +10,6 @@ from fastapi.responses import ORJSONResponse
 import repositories.sessions
 import repositories.users
 import usecases.passwords
-from api import responses
 from api.routes import router
 
 
@@ -30,21 +30,21 @@ async def oauth_token(
 
     user = await repositories.users.fetch_by_name(username)
     if not user:
-        return responses.error(
-            status.HTTP_401_UNAUTHORIZED,
-            "incorrect username/password",
+        return ORJSONResponse(
+            content="incorrect username/password",
+            status_code=status.HTTP_401_UNAUTHORIZED,
         )
 
     if not await usecases.passwords.verify(password, user.password_bcrypt):
-        return responses.error(
-            status.HTTP_401_UNAUTHORIZED,
-            "incorrect username/password",
+        return ORJSONResponse(
+            content="incorrect username/password",
+            status_code=status.HTTP_401_UNAUTHORIZED,
         )
 
     session = await repositories.sessions.create(user.id)
 
-    return responses.success(
-        {
+    return ORJSONResponse(
+        content={
             "token_type": "Bearer",
             "expires_in": session.expires_in.total_seconds(),
             "access_token": session.access_token,

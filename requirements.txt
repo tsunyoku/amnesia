@@ -1,7 +1,7 @@
-aiomysql==0.1.1
 aioredis==2.0.1
 anyio==3.6.1
 async-timeout==4.0.2
+asyncpg==0.26.0
 bcrypt==3.2.2
 black==22.6.0
 certifi==2022.6.15
@@ -27,7 +27,6 @@ platformdirs==2.5.2
 pre-commit==2.20.0
 pycparser==2.21
 pydantic==1.9.1
-PyMySQL==1.0.2
 PyYAML==6.0
 rfc3986==1.5.0
 sniffio==1.2.0

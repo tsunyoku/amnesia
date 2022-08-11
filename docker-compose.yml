@@ -5,15 +5,15 @@ networks:
     driver: bridge
 
 services:
-  mysql:
-    image: mysql
+  postgres:
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=amnesia
+      - POSTGRES_PASSWORD=amnesia
     restart: always
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./postgres:/var/lib/postgresql/data
     ports:
-      - 1000:3306
+      - 1000:5432
 
   redis:
     image: redis
@@ -30,16 +30,16 @@ services:
       # CRITICAL: 50 | ERROR: 40 | WARNING: 30 | INFO: 20 | DEBUG: 10
       - LOG_LEVEL=20
 
-      - READ_DB_USER=root
+      - READ_DB_USER=postgres
       - READ_DB_PASS=amnesia
-      - READ_DB_HOST=mysql
-      - READ_DB_PORT=3306
+      - READ_DB_HOST=postgres
+      - READ_DB_PORT=5432
       - READ_DB_NAME=amnesia
 
-      - WRITE_DB_USER=root
+      - WRITE_DB_USER=postgres
       - WRITE_DB_PASS=amnesia
-      - WRITE_DB_HOST=mysql
-      - WRITE_DB_PORT=3306
+      - WRITE_DB_HOST=postgres
+      - WRITE_DB_PORT=5432
       - WRITE_DB_NAME=amnesia
 
       - REDIS_HOST=redis
@@ -47,5 +47,5 @@ services:
     volumes:
       - .:/amnesia
     depends_on:
-      - mysql
+      - postgres
       - redis

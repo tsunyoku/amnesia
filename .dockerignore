@@ -1,2 +1,3 @@
-postgres/
-venv/
+postgres
+venv
+.git

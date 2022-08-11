@@ -75,16 +75,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3318 (class 0 OID 16385)
--- Dependencies: 209
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.users (id, name, safe_name, email, password_bcrypt, privileges, country, creation_time) FROM stdin;
-\.
-
-
---
 -- TOC entry 3326 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres

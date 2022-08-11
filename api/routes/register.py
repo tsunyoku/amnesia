@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import re
 from collections import defaultdict
 from typing import Mapping
@@ -72,5 +73,6 @@ async def register_user(
         password_bcrypt=password_bcrypt,
         country=country,
     )
+    logging.info(f"<{username} ({user_id})> created an account in {country.upper()}")
 
     return Response(content=b"ok")

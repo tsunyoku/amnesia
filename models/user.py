@@ -14,3 +14,6 @@ class User(BaseModel):
     privileges: int  # TOOD: enum?
     country: str
     creation_time: datetime
+
+    def __repr__(self) -> str:
+        return f"<{self.name} ({self.id})>"

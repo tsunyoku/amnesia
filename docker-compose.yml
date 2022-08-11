@@ -1,0 +1,33 @@
+version: "3.3"
+
+networks:
+  default:
+    driver: bridge
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=lol123
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 1000:3306
+
+  redis:
+    image: redis
+    restart: always
+    command: redis-server
+    ports:
+      - 2000:6379
+
+  amnesia:
+    build: .
+    ports:
+      - 3000:80
+    volumes:
+      - .:/amnesia
+    depends_on:
+      - mysql
+      - redis

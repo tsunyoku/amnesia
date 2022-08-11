@@ -1,7 +1,10 @@
-from databases.interfaces import Record
+from __future__ import annotations
+
 from typing import Any
+from typing import Mapping
 
 import databases
+from databases.interfaces import Record
 
 
 class Database:
@@ -41,17 +44,24 @@ class Database:
         self,
         query: str,
         mapping: dict | None = None,
-    ) -> Record | None:
+    ) -> Mapping | None:
         await self._ensure_connection()
-        return await self.read_database.fetch_one(query, mapping)  # type: ignore
+
+        db_res = await self.read_database.fetch_one(query, mapping)  # type: ignore
+        if not db_res:
+            return None
+
+        return db_res._mapping
 
     async def fetch_all(
         self,
         query: str,
         mapping: dict | None = None,
-    ) -> list[Record]:
+    ) -> list[Mapping]:
         await self._ensure_connection()
-        return await self.read_database.fetch_all(query, mapping)  # type: ignore
+
+        db_rows = await self.read_database.fetch_all(query, mapping)  # type: ignore
+        return [db_res._mapping for db_res in db_rows]
 
     async def execute(
         self,

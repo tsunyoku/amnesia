@@ -1,35 +1,39 @@
 from __future__ import annotations
 
-from typing import Generic
+from dataclasses import dataclass
+from typing import Any
 from typing import Literal
 from typing import TypedDict
-from typing import TypeVar
 
-T = TypeVar("T")
+from fastapi.responses import ORJSONResponse
 
 
-class SuccessResponse(TypedDict, Generic[T]):
+class SuccessResponse(TypedDict):
     status: Literal["success"]
-    data: T
+    data: Any
 
 
-class ErrorResponse(TypedDict, Generic[T]):
+class ErrorResponse(TypedDict):
     status: Literal["error"]
-    data: T
+    data: Any
 
 
-APIResponse = SuccessResponse[T] | ErrorResponse[T]
-
-
-def success(data: T) -> SuccessResponse[T]:
-    return {
+def success(data: Any) -> ORJSONResponse:
+    response_content: SuccessResponse = {
         "status": "success",
         "data": data,
     }
 
+    return ORJSONResponse(content=response_content)
 
-def error(data: T) -> ErrorResponse[T]:
-    return {
+
+def error(status_code: int, data: Any) -> ORJSONResponse:
+    response_content: ErrorResponse = {
         "status": "error",
         "data": data,
     }
+
+    return ORJSONResponse(
+        content=response_content,
+        status_code=status_code,
+    )

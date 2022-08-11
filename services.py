@@ -1,9 +1,11 @@
-from objects.database import Database
+from __future__ import annotations
 
-import databases
-import settings
 import aioredis
+import databases
 import httpx
+
+import settings
+from objects.database import Database
 
 read_database: databases.Database
 write_database: databases.Database
@@ -22,6 +24,8 @@ async def connect_services() -> None:
 
     redis = aioredis.from_url(settings.REDIS_DSN)
 
+    http = httpx.AsyncClient()
+
     await read_database.connect()
     await write_database.connect()
     await redis.initialize()
@@ -33,3 +37,4 @@ async def disconnect_services() -> None:
     await read_database.disconnect()
     await write_database.disconnect()
     await redis.close()
+    await http.aclose()

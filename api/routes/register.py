@@ -28,23 +28,34 @@ async def register_user(
 ):
     errors: Mapping[str, list[str]] = defaultdict(list)
 
-    if not USERNAME_REGEX.match(username):
-        errors["username"].append("Usernames must be between 3 and 32 characters")
+    if not username:
+        errors["username"].append("required")
+    else:
+        if not USERNAME_REGEX.match(username):
+            errors["username"].append("Usernames must be between 3 and 32 characters")
 
-    if "_" in username and " " in username:
-        errors["username"].append("Usernames cannot contain an underscore and space")
+        if "_" in username and " " in username:
+            errors["username"].append(
+                "Usernames cannot contain an underscore and space",
+            )
 
-    if await repositories.users.fetch_by_name(username):
-        errors["username"].append("Username must not be in use")
+        if await repositories.users.fetch_by_name(username):
+            errors["username"].append("Username must not be in use")
 
-    if not EMAIL_REGEX.match(email):
-        errors["user_email"].append("You must enter a valid email")
+    if not email:
+        errors["user_email"].append("required")
+    else:
+        if not EMAIL_REGEX.match(email):
+            errors["user_email"].append("You must enter a valid email")
 
-    if await repositories.users.fetch_by_email(email):
-        errors["user_email"].append("Email must not be in use")
+        if await repositories.users.fetch_by_email(email):
+            errors["user_email"].append("Email must not be in use")
 
-    if not 8 <= len(password) <= 32:
-        errors["password"].append("Passwords must be between 8 and 32 characters")
+    if not password:
+        errors["password"].append("required")
+    else:
+        if not 8 <= len(password) <= 32:
+            errors["password"].append("Passwords must be between 8 and 32 characters")
 
     if errors:
         return ORJSONResponse(

@@ -22,7 +22,7 @@ async def create(user_id: int) -> Session:
     await services.redis.setex(
         name=f"amnesia:sessions:{session.access_token}",
         time=timedelta(hours=24),
-        value=orjson.dumps(session),
+        value=orjson.dumps(session.dict()),
     )
 
     return session

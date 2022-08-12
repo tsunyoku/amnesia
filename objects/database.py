@@ -38,7 +38,12 @@ class Database:
         column: int | str = 0,
     ) -> Any:
         await self._ensure_connection()
-        return await self.read_database.fetch_val(query, mapping, column)  # type: ignore
+
+        database = self.read_database
+        if "RETURNING" in [word.upper() for word in query.split()]:
+            database = self.write_database
+
+        return await database.fetch_val(query, mapping, column)  # type: ignore
 
     async def fetch_one(
         self,
@@ -47,7 +52,11 @@ class Database:
     ) -> Mapping | None:
         await self._ensure_connection()
 
-        db_res = await self.read_database.fetch_one(query, mapping)  # type: ignore
+        database = self.read_database
+        if "RETURNING" in [word.upper() for word in query.split()]:
+            database = self.write_database
+
+        db_res = await database.fetch_one(query, mapping)  # type: ignore
         if not db_res:
             return None
 

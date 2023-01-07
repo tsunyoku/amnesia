@@ -1,4 +1,5 @@
-postgres
+mysql
+redis
 venv
 .git
 Dockerfile

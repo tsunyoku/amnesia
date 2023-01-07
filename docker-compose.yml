@@ -5,45 +5,44 @@ networks:
     driver: bridge
 
 services:
-  postgres:
-    image: postgres
+  mysql:
+    image: mysql
     environment:
-      - POSTGRES_PASSWORD=amnesia
+      - MYSQL_DATABASE=amnesia
+      - MYSQL_ROOT_PASSWORD=amnesia
     restart: always
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./mysql:/var/lib/mysql
     ports:
-      - 1000:5432
+      - 3306:3306
 
   redis:
     image: redis
     restart: always
-    command: redis-server
+    volumes:
+      - ./redis:/data
     ports:
-      - 2000:6379
+      - 6379:6379
 
   amnesia:
     image: amnesia:latest
+    restart: always
     ports:
-      - 3000:80
+      - 80:80
     environment:
       # CRITICAL: 50 | ERROR: 40 | WARNING: 30 | INFO: 20 | DEBUG: 10
       - LOG_LEVEL=20
 
-      - READ_DB_USER=postgres
-      - READ_DB_PASS=amnesia
-      - READ_DB_HOST=postgres
-      - READ_DB_PORT=5432
-      - READ_DB_NAME=amnesia
-
-      - WRITE_DB_USER=postgres
-      - WRITE_DB_PASS=amnesia
-      - WRITE_DB_HOST=postgres
-      - WRITE_DB_PORT=5432
-      - WRITE_DB_NAME=amnesia
+      - DB_USER=root
+      - DB_PASS=amnesia
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=amnesia
 
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+
+      - GEOLOCATION_DB_PATH=/ext/geoloc.mmdb
     depends_on:
-      - postgres
+      - mysql
       - redis

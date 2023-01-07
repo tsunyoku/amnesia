@@ -7,4 +7,4 @@ build:
 	@docker build -t amnesia:latest .
 
 run:
-	@docker-compose up --build postgres redis amnesia
+	@docker-compose up --build mysql redis amnesia

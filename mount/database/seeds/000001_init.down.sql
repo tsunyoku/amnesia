@@ -1,1 +1,1 @@
--- empty migration
+delete from groups where identifier = 'default';

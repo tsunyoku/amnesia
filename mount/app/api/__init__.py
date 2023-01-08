@@ -98,7 +98,11 @@ def init_geolocation_reader(app: FastAPI) -> None:
 
 
 def init_routes(app: FastAPI) -> None:
-    ...
+    from app.api.rest import router as rest_router
+    from app.api.ws import router as ws_router
+
+    app.include_router(rest_router)
+    app.include_router(ws_router)
 
 
 def init_api() -> FastAPI:
